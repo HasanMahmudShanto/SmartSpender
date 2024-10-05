@@ -233,9 +233,30 @@ namespace SmartSpenders
         }
         public void UpdateGeneralInfo(string updatedFirstname, string updatedLastname, string updatedEmail, string updatedDateOfBirth, int id)
         {
+
+            if (profilePictureFilePathTextBox.Text == "")
+            {
+
+                string query = "UPDATE generalUserInfo SET FirstName = @firstname, LastName = @lastname, EmailAddress = @email, DOB = @dateOfBirth WHERE Id = @id";
+                var cmd = dataAccess.GetCommand(query);
+
+                cmd.Parameters.AddWithValue("@id", id);
+                cmd.Parameters.AddWithValue("@firstname", updatedFirstname);
+                cmd.Parameters.AddWithValue("@lastname", updatedLastname);
+                cmd.Parameters.AddWithValue("@email", updatedEmail);
+                cmd.Parameters.AddWithValue("@dateOfBirth", updatedDateOfBirth);
+
+                dataAccess.ExecuteNonQueryCommand(cmd);
+            }
+            else
+            {
+                updateProfilePicture(updatedFirstname, updatedLastname, updatedEmail, updatedDateOfBirth, id);
+            }
+        }
+        private void updateProfilePicture(string updatedFirstname, string updatedLastname, string updatedEmail, string updatedDateOfBirth, int id)
+        {
             string query = "UPDATE generalUserInfo SET FirstName = @firstname, LastName = @lastname, EmailAddress = @email, DOB = @dateOfBirth, ProfilePicture = @ProfilePicture WHERE Id = @id";
 
-            
 
             var cmd = dataAccess.GetCommand(query);
 
